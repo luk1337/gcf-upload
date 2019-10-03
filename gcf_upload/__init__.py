@@ -20,7 +20,7 @@ from gcloud import storage
 def create_app():
     app = Flask(__name__)
 
-    @app.route("/get/<path>")
+    @app.route('/get/<path>')
     def get(path):
         try:
             buffer = storage.Blob(path, bucket).download_as_string()
@@ -31,9 +31,9 @@ def create_app():
 
         return send_file(io.BytesIO(buffer), mimetype=mime.from_buffer(buffer))
 
-    @app.route("/delete/<path>")
+    @app.route('/delete/<path>')
     def delete(path):
-        if request.headers.get("X-Api-Key") != os.getenv('API_KEY'):
+        if request.headers.get('X-Api-Key') != os.getenv('API_KEY'):
             abort(http.HTTPStatus.FORBIDDEN)
 
         try:
@@ -43,9 +43,9 @@ def create_app():
 
         return '', http.HTTPStatus.NO_CONTENT
 
-    @app.route("/put", methods=['POST'])
+    @app.route('/put', methods=['POST'])
     def put():
-        if request.headers.get("X-Api-Key") != os.getenv('API_KEY'):
+        if request.headers.get('X-Api-Key') != os.getenv('API_KEY'):
             abort(http.HTTPStatus.FORBIDDEN)
 
         if not request.files:
@@ -54,7 +54,7 @@ def create_app():
         filename = str(uuid.uuid4())
 
         blob = storage.Blob(filename, bucket)
-        blob.upload_from_string(request.files["file"].read())
+        blob.upload_from_string(request.files['file'].read())
 
         return redirect(url_for('get', path=filename))
 
@@ -77,7 +77,7 @@ def create_app():
     bucket = storage_client.get_bucket(os.getenv('GCF_BUCKET_NAME'))
 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(func=clean_up, trigger="interval", days=1).func()
+    scheduler.add_job(func=clean_up, trigger='interval', days=1).func()
     scheduler.start()
 
     # Shut down the scheduler when exiting the app
