@@ -6,7 +6,8 @@ import uuid
 
 import magic
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import abort, Flask
+from flask import Flask
+from flask import abort
 from flask import redirect
 from flask import request
 from flask import send_file
