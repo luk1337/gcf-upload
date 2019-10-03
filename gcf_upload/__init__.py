@@ -1,5 +1,6 @@
 import atexit
 import datetime
+import http
 import io
 import os
 import uuid
@@ -24,7 +25,7 @@ def create_app():
         try:
             buffer = storage.Blob(path, bucket).download_as_string()
         except exceptions.NotFound:
-            abort(404)
+            abort(http.HTTPStatus.NOT_FOUND)
 
         mime = magic.Magic(mime=True)
 
@@ -33,22 +34,22 @@ def create_app():
     @app.route("/delete/<path>")
     def delete(path):
         if request.headers.get("X-Api-Key") != os.getenv('API_KEY'):
-            abort(403)
+            abort(http.HTTPStatus.FORBIDDEN)
 
         try:
             storage.Blob(path, bucket).delete()
         except exceptions.NotFound:
-            abort(404)
+            abort(http.HTTPStatus.NOT_FOUND)
 
-        return '', 204
+        return '', http.HTTPStatus.NO_CONTENT
 
     @app.route("/put", methods=['POST'])
     def put():
         if request.headers.get("X-Api-Key") != os.getenv('API_KEY'):
-            abort(403)
+            abort(http.HTTPStatus.FORBIDDEN)
 
         if not request.files:
-            abort(400)
+            abort(http.HTTPStatus.BAD_REQUEST)
 
         file = request.files["file"]
         filename = str(uuid.uuid4())
