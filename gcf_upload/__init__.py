@@ -29,6 +29,18 @@ def create_app():
 
         return send_file(io.BytesIO(buffer), mimetype=mime.from_buffer(buffer))
 
+    @app.route("/delete/<path>")
+    def delete(path):
+        if request.headers.get("X-Api-Key") != os.getenv('API_KEY'):
+            abort(403)
+
+        try:
+            storage.Blob(path, bucket).delete()
+        except exceptions.NotFound:
+            abort(404)
+
+        return ""
+
     @app.route("/put", methods=['POST'])
     def put():
         if request.headers.get("X-Api-Key") != os.getenv('API_KEY'):
