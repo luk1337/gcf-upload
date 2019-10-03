@@ -51,11 +51,10 @@ def create_app():
         if not request.files:
             abort(http.HTTPStatus.BAD_REQUEST)
 
-        file = request.files["file"]
         filename = str(uuid.uuid4())
 
         blob = storage.Blob(filename, bucket)
-        blob.upload_from_string(file.read())
+        blob.upload_from_string(request.files["file"].read())
 
         return redirect(url_for('get', path=filename))
 
