@@ -40,7 +40,7 @@ def create_app():
         except exceptions.NotFound:
             abort(404)
 
-        return ""
+        return '', 204
 
     @app.route("/put", methods=['POST'])
     def put():
