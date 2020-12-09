@@ -56,7 +56,12 @@ def create_app():
         blob = storage.Blob(filename, bucket)
         blob.upload_from_string(request.files['file'].read())
 
-        return redirect(url_for('get', path=filename))
+        url = url_for('get', path=filename)
+
+        if request.form.get('redirect') == '0':
+            return request.host_url[:-1] + url, http.HTTPStatus.OK
+
+        return redirect(url)
 
     def clean_up():
         # Delete files older than 30 days
