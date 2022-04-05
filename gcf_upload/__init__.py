@@ -13,8 +13,8 @@ from flask import redirect
 from flask import request
 from flask import send_file
 from flask import url_for
-from gcloud import exceptions
-from gcloud import storage
+from google.cloud import exceptions
+from google.cloud import storage
 
 
 def create_app():
