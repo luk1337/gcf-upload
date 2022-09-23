@@ -15,7 +15,7 @@ idna==3.3
 itsdangerous==2.1.2
 Jinja2==3.1.1
 MarkupSafe==2.1.1
-protobuf==3.20.0
+protobuf==3.20.2
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 python-magic==0.4.25
