@@ -1,12 +1,9 @@
-import atexit
-import datetime
 import http
 import io
 import os
 import uuid
 
 import magic
-from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask
 from flask import abort
 from flask import redirect
@@ -63,14 +60,6 @@ def create_app():
 
         return redirect(url)
 
-    def clean_up():
-        # Delete files older than 30 days
-        for blob in bucket.list_blobs():
-            delta = datetime.datetime.now(datetime.timezone.utc) - blob.updated
-
-            if delta > datetime.timedelta(days=30):
-                blob.delete()
-
     assert os.getenv('API_KEY') is not None
     assert os.getenv('GCF_BUCKET_NAME') is not None
     assert os.getenv('GCF_PROJECT_ID') is not None
@@ -80,12 +69,5 @@ def create_app():
         json_credentials_path=os.getenv('GCF_SERVICE_ACCOUNT_JSON_PATH'),
         project=os.getenv('GCF_PROJECT_ID'))
     bucket = storage_client.get_bucket(os.getenv('GCF_BUCKET_NAME'))
-
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(func=clean_up, trigger='interval', days=1).func()
-    scheduler.start()
-
-    # Shut down the scheduler when exiting the app
-    atexit.register(lambda: scheduler.shutdown())
 
     return app
