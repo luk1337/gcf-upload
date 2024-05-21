@@ -1,4 +1,4 @@
-blinker==1.8.1
+blinker==1.8.2
 cachetools==5.3.3
 certifi==2024.2.2
 charset-normalizer==3.3.2
@@ -20,7 +20,7 @@ protobuf==4.25.3
 pyasn1==0.6.0
 pyasn1_modules==0.4.0
 python-magic==0.4.27
-requests==2.31.0
+requests==2.32.1
 rsa==4.9
 six==1.16.0
 urllib3==2.2.1
