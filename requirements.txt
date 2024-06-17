@@ -23,5 +23,5 @@ python-magic==0.4.27
 requests==2.32.1
 rsa==4.9
 six==1.16.0
-urllib3==2.2.1
+urllib3==2.2.2
 Werkzeug==3.0.3
